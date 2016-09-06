@@ -9,35 +9,62 @@
 import SpriteKit
 
 class GameScene: SKScene {
+    
+    var ground = SKSpriteNode()
+    var ghost = SKSpriteNode()
+    
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!"
-        myLabel.fontSize = 45
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
-        self.addChild(myLabel)
+        ground = SKSpriteNode(imageNamed: "Ground")
+        ground.setScale(0.5)
+        ground.position = CGPoint(x: self.frame.width/2, y: 0+ground.frame.height/2)
+        
+        ghost = SKSpriteNode(imageNamed: "Ghost")
+        ghost.size = CGSize(width: 60, height: 70)
+        ghost.position = CGPoint(x: self.frame.width/2 - ghost.frame.width/2, y: self.frame.height/2)
+        
+        
+        self.addChild(ghost)
+        self.addChild(ground)
+        
+        createWalls()
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
         
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
+       
+        
     }
+    
+    
+    func createWalls(){
+    
+        let addWall = SKNode()
+        
+        let topWall = SKSpriteNode(imageNamed: "Wall")
+        let btmWall = SKSpriteNode(imageNamed: "Wall")
+        
+        
+        topWall.setScale(0.5)
+        btmWall.setScale(0.5)
+        
+        topWall.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2+350)
+        btmWall.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2-350)
+
+        addWall.addChild(topWall)
+        addWall.addChild(btmWall)
+        
+        topWall.zRotation = CGFloat(M_PI)
+        
+        self.addChild(addWall)
+        
+        
+        
+    
+    }
+    
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
